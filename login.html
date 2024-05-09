@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up - Odd Jobs Board</title>
+    <style>
+        /* Reset CSS */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .login {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff; /* White container background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items:center
+        }
+
+        .header__title {
+            color: #fff;
+            text-align:center
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            background-color: #007bff; /* Blue button background */
+            color: #fff; /* White button text */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 id="headerTitle" class="header__title">Odd Jobs Board</h1>
+        </div>
+    </header>
+
+    <div class="login">
+        <h1>Login / Sign Up</h1>
+
+        <div id="loginForm">
+            <form id="loginFormContent">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" name="loginEmail" required>
+
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" name="loginPassword" required>
+
+                <button type="submit">Login</button>
+            </form>
+            <div class="form-link">
+                <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
+            </div>
+        </div>
+
+        <div id="signupForm" class="hidden">
+            <form id="signupFormContent">
+                <label for="signupEmail">Email:</label>
+                <input type="email" id="signupEmail" name="signupEmail" required>
+
+                <label for="signupPassword">Password:</label>
+                <input type="password" id="signupPassword" name="signupPassword" required>
+
+                <label for="signupConfirmPassword">Confirm Password:</label>
+                <input type="password" id="signupConfirmPassword" name="signupConfirmPassword" required>
+
+                <button type="submit">Sign Up</button>
+            </form>
+            <div class="form-link">
+                <p>Already have an account? <a href="#" id="loginLink">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+                function getUserIdFromToken(token) {
+    try {
+        // Decode the JWT token
+        const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decoding JWT token
+        
+        // Extract userId from the decoded token
+        const userId = decodedToken.userId; // Assuming userId is stored in the token payload
+        
+        return userId;
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null; // Return null if unable to decode token or extract userId
+    }
+}
+        // Function to handle login form submission
+document.getElementById('loginFormContent').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+    
+    // Get form data
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    // Construct request data
+    const requestData = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
+        })
+    };
+
+    // Replace 'YOUR_API_URL' with your actual API URL
+    const apiUrl = REMOVED;
+    
+    // Make API request
+    fetch(apiUrl + '/login', requestData)
+        .then(response => {
+            if (response.status === 200) {
+                // Handle successful login
+                return response.json(); // Parse response body as JSON
+            } else {
+                // Handle login failure
+                throw new Error('Login failed');
+            }
+        })
+        .then(data => {
+            const token = data.token;
+            const userId = getUserIdFromToken(token);
+
+            // Save the user ID to local storage
+            localStorage.setItem('userId', userId);
+
+            // Save the token to local storage
+            localStorage.setItem('token', token);
+            // Redirect to the home page or perform other actions
+            window.location.href = 'index.html';
+        })
+        .catch(error => {
+            // Handle login failure or other errors
+            console.error('Error:', error);
+            alert('Login failed. Please try again.');
+        });
+});
+
+
+        // Function to handle signup form submission
+        document.getElementById('signupFormContent').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Get form data
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+
+            // Construct request data
+            const requestData = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            };
+
+            // Replace 'YOUR_API_URL' with your actual API URL
+            const apiUrl = REMOVED;
+            
+            // Make API request
+            fetch(apiUrl + '/signup', requestData)
+                .then(response => {
+                    if (response.ok) {
+                        // Handle successful signup
+                        alert('Sign up successful!');
+                    } else {
+                        // Handle signup failure
+                        alert('Sign up failed. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    // Handle network errors
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again later.');
+                });
+        });
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const signupLink = document.getElementById('signupLink');
+        const loginLink = document.getElementById('loginLink');
+
+        signupLink.addEventListener('click', function() {
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+        });
+
+        loginLink.addEventListener('click', function() {
+            loginForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+        });
+
+// Get the header title element
+const headerTitle = document.getElementById('headerTitle');
+
+// Add event listener to the header title
+headerTitle.addEventListener('click', function() {
+    console.log('Header title clicked'); // Log a message to the console
+    // Navigate to index.html
+    window.location.href = 'index.html';
+});
+
+
+    </script>
+</body>
+</html>
