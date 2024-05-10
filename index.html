@@ -195,6 +195,11 @@
             font-size: 16px;
         }
 
+        button:disabled {
+  /* your styling here */
+  opacity: 0.5; /* example: reduce opacity to indicate disabled state */
+  cursor: not-allowed; /* example: change cursor to indicate disabled state */
+}
 
 /* Chat window */
 .chat-window {
@@ -270,6 +275,8 @@
     display: flex; /* Ensure message elements are flex items */
     flex-direction: column; /* Stack messages vertically */
     padding: 5px 10px;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
 /* CSS for Message Elements */
@@ -382,38 +389,67 @@
         // Define the API Gateway URL
         const apiUrl = APIURL;
 
-        // Function to fetch and display posted jobs
-        async function displayJobs() {
-            try {
-                const response = await fetch(apiUrl + '/jobs');
-                const data = await response.json();
+// Function to fetch and display posted jobs
+async function displayJobs() {
+    try {
+        const response = await fetch(apiUrl + '/jobs');
+        const data = await response.json();
 
-                // Parse the JSON-encoded string into a JavaScript object
-                const jobs = JSON.parse(data.body);
+        // Parse the JSON-encoded string into a JavaScript object
+        const jobs = JSON.parse(data.body);
 
-                // Check if jobs is an array
-                if (Array.isArray(jobs)) {
-                    const jobList = document.getElementById('jobList');
-                    jobList.innerHTML = '';
+        // Check if jobs is an array
+        if (Array.isArray(jobs)) {
+            const jobList = document.getElementById('jobList');
+            jobList.innerHTML = '';
 
-                    jobs.forEach(job => {
-                        const jobElement = document.createElement('div');
-                        jobElement.classList.add('job');
-                        jobElement.innerHTML = `
-                            <h3>${job.title}</h3>
-                            <p>${job.description}</p>
-                            <p><strong>Location:</strong> ${job.location}</p>
-                            ${job.accepted ? '<button disabled>Job Accepted</button>' : '<button onclick="acceptJob(\'' + job.jobId + '\')">Accept Job</button>'}
-                        `;
-                        jobList.appendChild(jobElement);
-                    });
-                } else {
-                    console.error('Invalid response format: jobs is not an array');
+            const userId = localStorage.getItem('userId');
+            
+            // Get all chat elements
+            const chatElements = document.querySelectorAll('.chat');
+
+            jobs.forEach(job => {
+                if (job.posterId === userId) {
+                    // Skip creating the button if the user posted the job
+                    const jobElement = document.createElement('div');
+                    jobElement.classList.add('job');
+                    jobElement.innerHTML = `
+                        <h3>${job.title}</h3>
+                        <p>${job.description}</p>
+                        <p><strong>Location:</strong> ${job.location}</p>
+                        <button disabled class="job-accepted-btn">Job Posted</button>
+                    `;
+                    jobList.appendChild(jobElement);
+                 } else {
+                const jobElement = document.createElement('div');
+                jobElement.classList.add('job');
+                jobElement.innerHTML = `
+                    <h3>${job.title}</h3>
+                    <p>${job.description}</p>
+                    <p><strong>Location:</strong> ${job.location}</p>
+                    ${isJobAccepted(job.jobId, chatElements) ? '<button disabled>Job Accepted</button>' : '<button onclick="acceptJob(\'' + job.jobId + '\')">Accept Job</button>'}
+                `;
+                jobList.appendChild(jobElement);
                 }
-            } catch (error) {
-                console.error('Error fetching jobs:', error);
-            }
+            });
+        } else {
+            console.error('Invalid response format: jobs is not an array');
         }
+    } catch (error) {
+        console.error('Error fetching jobs:', error);
+    }
+}
+
+// Function to check if a job has been accepted based on chat elements
+function isJobAccepted(jobId, chatElements) {
+    for (const chatElement of chatElements) {
+        if (chatElement.dataset.jobId === jobId) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
         // Function to search for jobs
         async function searchJobs() {
@@ -433,16 +469,34 @@
             const jobList = document.getElementById('jobList');
             jobList.innerHTML = '';
 
+            const userId = localStorage.getItem('userId');
+            
+            // Get all chat elements
+            const chatElements = document.querySelectorAll('.chat');
+
             searchResults.forEach(job => {
+                if (job.posterId === userId) {
+                    // Skip creating the button if the user posted the job
+                    const jobElement = document.createElement('div');
+                    jobElement.classList.add('job');
+                    jobElement.innerHTML = `
+                        <h3>${job.title}</h3>
+                        <p>${job.description}</p>
+                        <p><strong>Location:</strong> ${job.location}</p>
+                        <button disabled class="job-accepted-btn">Job Posted</button>
+                    `;
+                    jobList.appendChild(jobElement);
+                 } else {
                 const jobElement = document.createElement('div');
                 jobElement.classList.add('job');
                 jobElement.innerHTML = `
                     <h3>${job.title}</h3>
                     <p>${job.description}</p>
                     <p><strong>Location:</strong> ${job.location}</p>
-                    <button onclick="acceptJob('${job.jobId}')">Accept Job</button>
+                    ${isJobAccepted(job.jobId, chatElements) ? '<button disabled>Job Accepted</button>' : '<button onclick="acceptJob(\'' + job.jobId + '\')">Accept Job</button>'}
                 `;
                 jobList.appendChild(jobElement);
+                }
             });
         }
 
@@ -531,7 +585,7 @@ const userId = localStorage.getItem('userId');
         const chatId = body.chatId;
         const jobTitle = body.title;
         // Create a chat with the job poster
-        createChat(chatId, jobTitle);
+        createChat(chatId, jobTitle, jobId);
         displayJobs();
         alert('Job accepted');
     } else {
@@ -541,12 +595,13 @@ const userId = localStorage.getItem('userId');
 
 
 // Function to create a chat with the job poster
-function createChat(chatId, jobTitle) {
+function createChat(chatId, jobTitle, jobId) {
     const chatWindow = document.getElementById('chatWindow');
     const chatElement = document.createElement('div');
     chatElement.classList.add('chat');
     chatElement.dataset.chatId = chatId; // Set the data-chatId attribute
     chatElement.dataset.jobTitle = jobTitle;
+    chatElement.dataset.jobId = jobId;
     chatElement.innerHTML = `
         <h3>${jobTitle}</h3>
         </div>
@@ -577,7 +632,7 @@ async function displayChats(userId) {
         //chatWindow.innerHTML = ''; // Clear previous chat windows
 
         chats.forEach(chat => {
-            createChat(chat.chatId, chat.title); // Call createChat function for each chat
+            createChat(chat.chatId, chat.title, chat.jobId); // Call createChat function for each chat
         });
     } catch (error) {
         console.error('Error displaying chats:', error);
@@ -700,7 +755,9 @@ async function sendMessage(chatId, text) {
             const chatboxMessages = document.querySelector('.chatbox-messages');
             const messageElement = document.createElement('div');
             messageElement.textContent = text;
-            fetchChatMessages(chatId);
+            await fetchChatMessages(chatId);
+            // Scroll to the bottom of the chat messages container
+            chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
         } else {
             console.error('Failed to send message:', response.status);
             alert('Failed to send message. Please try again later.');
@@ -731,6 +788,8 @@ async function openChatbox(chatId, jobTitle) {
     const chatboxMessages = document.createElement('div');
     chatboxMessages.classList.add('chatbox-messages');
 
+    chatbox.dataset.chatId = chatId;
+
     // Create message input and send button
     const messageInput = document.createElement('input');
     messageInput.setAttribute('type', 'text');
@@ -740,6 +799,16 @@ async function openChatbox(chatId, jobTitle) {
     const sendButton = document.createElement('button');
     sendButton.textContent = 'Send';
     sendButton.classList.add('sendButton');
+
+    // Create close button
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Close';
+    closeButton.classList.add('close-button');
+
+    // Event listener for the close button
+    closeButton.addEventListener('click', function() {
+        chatbox.remove(); // Remove the chatbox when the close button is clicked
+    });
 
     // Event listener for the send button
     sendButton.addEventListener('click', function() {
@@ -763,6 +832,7 @@ messageInput.addEventListener('keypress', function(event) {
 
 
     // Append chatbox elements to the chat window
+    chatbox.appendChild(closeButton);
     chatbox.appendChild(chatboxHeader);
     chatbox.appendChild(chatboxMessages);
     chatbox.appendChild(messageInput);
@@ -773,8 +843,25 @@ messageInput.addEventListener('keypress', function(event) {
 
     // Fetch and display old messages
     await fetchChatMessages(chatId);
+    // Scroll to the bottom of the chat messages container
+    chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
 }
 
+
+// Function to periodically fetch chat messages if a chatbox is open
+function fetchChatMessagesIfOpen() {
+    const existingChatbox = document.querySelector('.chatbox');
+    if (existingChatbox) {
+        const currentChatId = existingChatbox.dataset.chatId;
+        fetchChatMessages(currentChatId);
+    }
+}
+
+// Interval in milliseconds to fetch chat messages (e.g., every 5 seconds)
+const fetchInterval = 5000;
+
+// Start fetching chat messages at the specified interval
+const fetchIntervalId = setInterval(fetchChatMessagesIfOpen, fetchInterval);
 
 </script>
 </body>
