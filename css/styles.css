@@ -1,0 +1,422 @@
+/* Reset CSS */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Helvetica, 'Segoe UI', Tahoma, Verdana, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    line-height: 1.6;
+    position: relative; /* Added position relative to the body */
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    background-color: #007bff;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__title {
+    color: #fff;
+    text-align: center;
+}
+
+/* Login Form Styling */
+
+.login {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #fff; /* White container background */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+}
+.form-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login h1 {
+    margin-bottom: 20px;
+}
+
+.login .form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.login .form-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login .form-btn {
+    width: 100%;
+    background-color: #007bff; /* Blue button background */
+    color: #fff; /* White button text */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-link .form-btn:hover {
+    background-color: #0056b3;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Main */
+.main {
+    padding: 20px 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.login-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.login-button:hover {
+    background-color: #218838;
+}
+
+.search {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.search__input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+}
+
+.search__button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.existing-jobs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+/* Job Styling */
+.job {
+    width: calc(20% - 20px);
+    background-color: #fff; /* White job container */
+    border: 1px solid #ccc; /* Border color */
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    margin-bottom: 20px;
+    overflow: hidden; /* Prevent text overflow */
+    text-overflow: ellipsis; /* Show ellipsis (...) for overflowed text */
+}
+
+.job h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+.job p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.job button {
+    background-color: #28a745; /* Green button for job acceptance */
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.job button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* CSS for the delete job button */
+.job button.delete-job-btn {
+    background-color: #dc3545; /* Red color for delete button */
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 2px;
+}
+
+.job button.delete-job-btn:hover {
+    background-color: #c82333; /* Darker red color on hover */
+}
+
+.add-job-btn {
+    display: block;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px; /* Spacing between the button and existing jobs */
+}
+
+.add-job-btn:hover {
+    background-color: #0056b3;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-btn {
+    display: block;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px; /* Spacing between the button and existing jobs */
+}
+
+.form-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Footer */
+.footer {
+    background-color: #007bff;
+    padding: 20px 0;
+    color: #fff;
+    text-align: center;
+}
+
+.footer__text {
+    font-size: 16px;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Chat window */
+.chat-window {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    visibility: hidden;
+}
+
+.chat-window__title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 auto; /* Center the header text */
+    padding: 5px 10px;
+    background-color: #f7f7f7;
+    border-bottom: 2px solid #333; /* Darker border color */
+    border-radius: 5px 5px 0 0;
+    text-align: center; /* Center the text */
+    margin-bottom: 10px;
+}
+
+/* Chat element */
+.chat {
+    margin-bottom: 10px; /* Add spacing between each chat */
+    border-bottom: 1px solid #ccc; /* Add border between each chat */
+}
+
+.chat:hover {
+    background-color: #e0dfdf;
+}
+
+/* CSS for the delete chat button */
+.delete-chat-btn {
+    background-color: #dc3545; /* Red color for delete button */
+    color: #fff;
+    border: none;
+    padding: 2px 5px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    float: right;
+}
+
+.delete-chat-btn:hover {
+    background-color: #c82333; /* Darker red color on hover */
+}
+
+/* Chatbox */
+.chatbox {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    height: 400px; /* Set a maximum height for the chatbox */
+    overflow: hidden; /* Hide overflow to ensure scrollbars are visible only when needed */
+    z-index: 999; /* Adjusted z-index to ensure it's below the chat window */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Job title */
+.chatbox .chatbox-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px 10px;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ccc;
+    border-radius: 5px 5px 0 0;
+}
+
+/* CSS for Chatbox Messages */
+.chatbox-messages {
+    flex: 1; /* Let the messages container grow to fill available space */
+    overflow-y: auto; /* Add vertical scrollbar when needed */
+    display: flex; /* Ensure message elements are flex items */
+    flex-direction: column; /* Stack messages vertically */
+    padding: 5px 10px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+/* CSS for Message Elements */
+.chatbox-messages div {
+    padding: 5px;
+    background-color: #696969;
+    color: #fcfafa;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    align-self: flex-start; /* Align all messages to the left by default */
+}
+
+/* CSS for Messages Sent by You */
+.chatbox-messages .sent-by-you {
+    align-self: flex-end; /* Align messages sent by you to the right */
+    background-color: #007bff; /* Background color for messages sent by you */
+    color: #fcfafa; /* Text color for messages sent by you */
+}
+
+/* Message Input Container */
+.message-input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px; /* Separate from chat messages */
+    padding-top: 10px; /* Add padding at the top */
+}
+
+/* Message Input */
+.message-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Send Button */
+.sendButton {
+    padding: 8px 15px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.sendButton:hover {
+    background-color: #0056b3;
+}
