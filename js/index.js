@@ -1,6 +1,7 @@
+
 // Define the API Gateway URL
-   // Replace 'YOUR_API_URL' with your actual API URL
-   const apiUrl = 'YOUR_API_URL';
+   // Replace with your actual API URL
+   const apiUrl = process.env.JOB_API_URL;
 
 // Function to fetch and display posted jobs
 async function displayJobs() {

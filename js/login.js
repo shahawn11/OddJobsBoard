@@ -1,3 +1,8 @@
+
+// Define the API Gateway URL
+   // Replace with your actual API URL
+    const apiUrl = process.env.USER_API_URL;
+    
     function getUserIdFromToken(token) {
     try {
         // Decode the JWT token
@@ -31,9 +36,6 @@ document.getElementById('loginFormContent').addEventListener('submit', function(
             password: password
         })
     };
-
-    // Replace 'YOUR_API_URL' with your actual API URL
-    const apiUrl = 'YOUR_API_URL';
     
     // Make API request
     fetch(apiUrl + '/login', requestData)
@@ -100,9 +102,6 @@ document.getElementById('loginFormContent').addEventListener('submit', function(
                     password: password
                 })
             };
-
-            // Replace 'YOUR_API_URL' with your actual API URL
-            const apiUrl = REMOVED;
             
             // Make API request
             fetch(apiUrl + '/signup', requestData)
